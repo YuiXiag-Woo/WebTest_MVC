@@ -1,0 +1,105 @@
+﻿@model WebTest_MVC.Models.HtmlStreamData
+
+@{
+    ViewBag.Title = "Home Page";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <form method="post" action="@Url.Action("CreateMember")">
+        <p>@Html.DisplayNameFor(model => model.empMem.empName) <input type="text" name="empMem.empName" required class="form-control" id="empName" value="" /></p>
+        <p>@Html.DisplayNameFor(model => model.empMem.empAge)<input type="text" name="empMem.empAge" required class="form-control" max="1000" min="20" id="empAge" /></p>
+        <p>@Html.DisplayNameFor(model => model.empMem.empBirth)<input type="text" name="empMem.empBirth" required class="form-control" id="empBirth" /></p>
+         <p><input type="submit" value="建立帳號" class="btn btn-success"id="AccBtn" /></p>
+        
+    </form>
+    <table class="table">
+        @if (Model.empDatas.Count() > 0)
+        {
+            <thead>
+                <tr>
+
+                    <th>
+                        @Html.DisplayNameFor(model => model.empMem.empName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.empMem.empAge)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.empMem.empBirth)
+                    </th>
+
+                    <th>
+
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var item in Model.empDatas)
+                {
+                    <tr>
+                        <td id="DataempName">
+                            @item.empName
+                        </td>
+
+                        <td id="DataempAge" >
+                            @item.empAge
+                        </td >
+                        <td id="DataempBirth">
+                                @item.empBirth
+
+                        </td>
+                        <td>
+                            <button onclick="" id="Editbtn" class="btnSelect">編輯</button>
+                            <script>
+                                //編輯按鈕事件回填表格
+                                $(function () {
+
+                                    $(document).on("click", ".btnSelect", function () {
+                                       
+                                        var currentRow = $(this).closest("tr");
+                                        const col1 = $.trim(currentRow.find("td:eq(0)").text()); // get current row 1st TD value
+                                        var col2 = $.trim(currentRow.find("td:eq(1)").text()); // get current row 2nd TD
+                                        var col3 = $.trim(currentRow.find("td:eq(2)").text()); // get current row 3rd TD
+                                        document.getElementById("AccBtn").value = "編輯帳號";
+                                        const d = new Date(col3);
+                                        //alert(col3);
+                                        $('#empName').attr("value", col1);
+                                        $('#empAge').attr("value", col2);
+                                        $('#empBirth').attr("value", col3);
+                                        
+                                        
+                                        // document.getElementById("empName").value = col1;
+                                        //document.getElementById("empName").value = col1;
+                                        //alert(col1);
+                                    });
+                                });
+
+            </script>
+            <button onclick="location.href='@Url.Action("Delete")?name=@item.empName'">刪除</button>
+
+            </td>
+            </tr>
+        }
+    </tbody>
+}
+else
+{
+    <p>目前查無成員資料</p>
+}
+
+
+
+    </table>
+    <div></div>
+    <div></div>
+    <div></div>
+
+</body>
+</html>
